@@ -94,7 +94,7 @@
 								
 								$telepon= $_POST['telepon'];
 								$username= $_POST['username'];
-								$password= md5($_POST['password']);
+								$password= $_POST['password'];
 								$level= $_POST['level'];
 								
 								$foto= $_FILES['foto']['name'];

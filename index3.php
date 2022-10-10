@@ -117,14 +117,14 @@ if(empty($_SESSION['superadmin'])){
 	    <li class="nav-item active">
         <a class="nav-link" href="?page=pengguna">
           <i class="fas fa-fw fa-home"></i>
-          <span>Data Pengguna</span></a>
+          <span>Data Users</span></a>
       </li>
 	  
 	  
 	   <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseData" aria-expanded="true" aria-controls="collapseData">
           <i class="fas fa-fw fa-folder"></i>
-          <span>Data Master</span>
+          <span>Data Warehouse</span>
         </a>
         <div id="collapseData" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -383,8 +383,6 @@ if(empty($_SESSION['superadmin'])){
 					   include "page/laporan/laporan_barangkeluar.php";
 				   }
 					}
-		
-			   
 			     
 			   if ($page == "") {
 				   include "home3.php";

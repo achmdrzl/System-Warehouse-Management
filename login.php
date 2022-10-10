@@ -97,7 +97,7 @@ $koneksi = new mysqli("localhost", "root", "", "inventori");
 <?php
 
 $username = $_POST['username'];
-$password = md5($_POST['password']);
+$password = $_POST['password'];
 $login = $_POST['login'];
 $level = $_POST['level'];
 
