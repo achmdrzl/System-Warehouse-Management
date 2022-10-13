@@ -1,25 +1,21 @@
-
 <?php
-mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-	session_start();
-	
-	
-	
-	$koneksi = new mysqli("localhost","root","","inventori");
-	
-	if(empty($_SESSION['admin'])){
-    
-    header("location:login.php");
-  }
-	
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+session_start();
 
 
 
-	
-	
-	
-	?>	
+$koneksi = new mysqli("localhost", "root", "", "inventori");
+
+if (empty($_SESSION['admin'])) {
+
+  header("location:login.php");
+}
+
+$barang_masuk = mysqli_query($koneksi, "SELECT * FROM barang_masuk");
+$barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
+
+?>
 
 
 
@@ -42,11 +38,12 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-  
-  
+
+  <script src="js/chart/Chart.bundle.min.js"></script>
+
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
- 
+
 
 </head>
 
@@ -66,35 +63,36 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         <div class="sidebar-brand-text mx-2">PT. MAJU JAYA</div>
       </a>
 
-	  <!-- Divider -->
+      <!-- Divider -->
       <hr class="sidebar-divider my-0">
-	  
 
- <?php
-   if ($_SESSION['admin']) {
-	   $user = $_SESSION['admin'];
-   }
-   $sql =$koneksi->query("select * from users where id='$user'");
-   $data = $sql->fetch_assoc();
-   ?>
 
-  
+      <?php
+      if ($_SESSION['admin']) {
+        $user = $_SESSION['admin'];
+      }
+      $sql = $koneksi->query("select * from users where id='$user'");
+      $data = $sql->fetch_assoc();
+      ?>
 
-  <!--sidebar start-->
 
-    <li class="d-flex align-items-center justify-content-center">
+
+      <!--sidebar start-->
+
+      <li class="d-flex align-items-center justify-content-center">
         <a class="nav-link">
-		 <img src="img/<?php echo $data['foto']?>" class="img-circle" width="80" alt="User"/></a>
-		  <li class="d-flex align-items-center justify-content-center">
-		  </li>
-	  </li>
-		 <li class="nav-item ">
-        <a class="nav-link">
-         	<div class="d-flex align-items-center justify-content-center" class="name">  <?php echo  $data['nama'];?></div></font>
-			<div class="d-flex align-items-center justify-content-center" class="email"><strong> <?php echo $data['level'];?></strong></div>
-		 </a>
+          <img src="img/<?php echo $data['foto'] ?>" class="img-circle" width="80" alt="User" /></a>
+      <li class="d-flex align-items-center justify-content-center">
       </li>
-	
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link">
+          <div class="d-flex align-items-center justify-content-center" class="name"> <?php echo  $data['nama']; ?></div>
+          </font>
+          <div class="d-flex align-items-center justify-content-center" class="email"><strong> <?php echo $data['level']; ?></strong></div>
+        </a>
+      </li>
+
 
 
 
@@ -112,18 +110,11 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
       <div class="sidebar-heading">
         Pilih Menu
       </div>
-	 
+
       <!-- Nav Item - Pages Collapse Menu -->
-	  
-	  
-	    <li class="nav-item active">
-        <a class="nav-link" href="?page=pengguna">
-          <i class="fas fa-fw fa-home"></i>
-          <span>Data Pengguna</span></a>
-      </li>
-	  
-	  
-	   <li class="nav-item active">
+
+
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseData" aria-expanded="true" aria-controls="collapseData">
           <i class="fas fa-fw fa-folder"></i>
           <span>Data Master</span>
@@ -134,15 +125,13 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
             <a class="collapse-item" href="?page=gudang">Data Barang</a>
             <a class="collapse-item" href="?page=jenisbarang">Jenis Barang</a>
             <a class="collapse-item" href="?page=satuanbarang">Satuan Barang</a>
-			 <a class="collapse-item" href="?page=supplier">Data Supplier</a>
-           
+            <a class="collapse-item" href="?page=supplier">Data Supplier</a>
+
           </div>
         </div>
       </li>
-	  
-	
-	  
-	    <li class="nav-item active">
+
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Transaksi</span>
@@ -152,22 +141,18 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
             <h6 class="collapse-header">Menu:</h6>
             <a class="collapse-item" href="?page=barangmasuk">Barang Masuk</a>
             <a class="collapse-item" href="?page=barangkeluar">Barang Keluar</a>
-           
-           
+
+
           </div>
         </div>
       </li>
 
-	  
-	  
-	      <!-- Heading -->
+      <!-- Heading -->
       <div class="sidebar-heading">
         Laporan
       </div>
-	  
-	  
-      
-	     <li class="nav-item active">
+
+      <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLaporan" aria-expanded="true" aria-controls="collapseLaporan">
           <i class="fas fa-fw fa-folder"></i>
           <span>Laporan</span>
@@ -177,14 +162,14 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
             <h6 class="collapse-header">Menu Laporan:</h6>
             <a class="collapse-item" href="?page=laporan_supplier">Laporan Supplier</a>
             <a class="collapse-item" href="?page=laporan_gudang">Laporan Stok Gudang</a>
-			 <a class="collapse-item" href="?page=laporan_barangmasuk">Laporan Barang Masuk</a>
-            <a class="collapse-item" href="?page=laporan_barangkeluar">Laporan Barang Keluar</a> 
+            <a class="collapse-item" href="?page=laporan_barangmasuk">Laporan Barang Masuk</a>
+            <a class="collapse-item" href="?page=laporan_barangkeluar">Laporan Barang Keluar</a>
           </div>
         </div>
       </li>
-	  
-	  
-	  
+
+
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -202,7 +187,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
       <!-- Main Content -->
       <div id="content">
 
-		<!-- Topbar -->
+        <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
@@ -210,7 +195,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
             <i class="fa fa-bars"></i>
           </button>
 
-         
+
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -219,14 +204,14 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-			 <div class="top-menu">
-        <ul class="nav pull-right top-menu">
-		
-  
-		      <li><a onclick="return confirm('Apakah anda yakin akan logout?')" class="btn btn-danger" class="logout" href="logout.php">Keluar</a></li>
-        </ul>
-      </div>
-             
+              <div class="top-menu">
+                <ul class="nav pull-right top-menu">
+
+
+                  <li><a onclick="return confirm('Apakah anda yakin akan logout?')" class="btn btn-danger" class="logout" href="logout.php">Keluar</a></li>
+                </ul>
+              </div>
+
             </li>
 
           </ul>
@@ -236,182 +221,182 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-		
-		 <section class="content">
-	
-	
-		      <?php
-			   $page = $_GET['page'];
-			   $aksi = $_GET['aksi'];
-			   
-			   
-			   	if ($page == "pengguna") {
-				   if ($aksi == "") {
-					   include "page/pengguna/pengguna2.php";
-				   }
-				    if ($aksi == "tambahpengguna2") {
-					   include "page/pengguna/tambahpengguna2.php";
-					}
-			   }
-			   
-			   
-			   if ($page == "supplier") {
-				   if ($aksi == "") {
-					   include "page/supplier/supplier.php";
-				   }
-				    if ($aksi == "tambahsupplier") {
-					   include "page//supplier/tambahsupplier.php";
-				   }
-				    if ($aksi == "ubahsupplier") {
-					   include "page/supplier/ubahsupplier.php";
-				   }
-				   
-				    if ($aksi == "hapussupplier") {
-					   include "page/supplier/hapussupplier.php";
-				   }
-			   }
-			   
-			    
-			   if ($page == "jenisbarang") {
-				   if ($aksi == "") {
-					   include "page/jenisbarang/jenisbarang.php";
-				   }
-				    if ($aksi == "tambahjenis") {
-					   include "page//jenisbarang/tambahjenis.php";
-				   }
-				    if ($aksi == "ubahsupplier") {
-					   include "page/supplier/ubahsupplier.php";
-				   }
-				   
-				    if ($aksi == "hapussupplier") {
-					   include "page/supplier/hapussupplier.php";
-				   }
-			   }
-			   
-			     if ($page == "satuanbarang") {
-				   if ($aksi == "") {
-					   include "page/satuanbarang/satuan.php";
-				   }
-				    if ($aksi == "tambahsatuan") {
-					   include "page//satuanbarang/tambahsatuan.php";
-				   }
-				    if ($aksi == "ubahsatuan") {
-					   include "page/satuanbarang/ubahsatuan.php";
-				   }
-				   
-				    if ($aksi == "hapussatuan") {
-					   include "page/satuanbarang/hapussatuan.php";
-				   }
-			   }
-	
-	
-	
-	
-				   if ($page == "barangmasuk") {
-				   if ($aksi == "") {
-					   include "page/barangmasuk/barangmasuk.php";
-				   }
-				    if ($aksi == "tambahbarangmasuk") {
-					   include "page/barangmasuk/tambahbarangmasuk.php";
-				   }
-				    if ($aksi == "ubahbarangmasuk") {
-					   include "page/barangmasuk/ubahbarangmasuk.php";
-				   }
-				   
-				    if ($aksi == "hapusbarangmasuk") {
-					   include "page/barangmasuk/hapusbarangmasuk.php";
-				   }
-			   }
-	
-	
-				if ($page == "gudang") {
-				   if ($aksi == "") {
-					   include "page/gudang/gudang.php";
-				   }
-				    if ($aksi == "tambahgudang") {
-					   include "page/gudang/tambahgudang.php";
-				   }
-				    if ($aksi == "ubahgudang") {
-					   include "page/gudang/ubahgudang.php";
-				   }
-				   
-				    if ($aksi == "hapusgudang") {
-					   include "page/gudang/hapusgudang.php";
-				   }
-				}
-				
-				
-				   if ($page == "barangkeluar") {
-				   if ($aksi == "") {
-					   include "page/barangkeluar/barangkeluar.php";
-				   }
-				    if ($aksi == "tambahbarangkeluar") {
-					   include "page/barangkeluar/tambahbarangkeluar.php";
-				   }
-				    if ($aksi == "ubahbarangkeluar") {
-					   include "page/barangkeluar/ubahbarangkeluar.php";
-				   }
-				   
-				    if ($aksi == "hapusbarangkeluar") {
-					   include "page/barangkeluar/hapusbarangkeluar.php";
-				   }
-			   }
-				
-				
-			      if ($page == "laporan_supplier") {
-				   if ($aksi == "") {
-					   include "page/laporan/laporan_supplier.php";
-				   }
-				  }
-				    if ($page == "laporan_barangmasuk") {
-				   if ($aksi == "") {
-					   include "page/laporan/laporan_barangmasuk.php";
-				   }
-					}
-					
-				   if ($page == "laporan_gudang") {
-				   if ($aksi == "") {
-					   include "page/laporan/laporan_gudang.php";
-				   }   
-			   }
-				    if ($page == "laporan_barangkeluar") {
-				   if ($aksi == "") {
-					   include "page/laporan/laporan_barangkeluar.php";
-				   }
-					}
-		
-			   
-			     
-			   if ($page == "") {
-				   include "home.php";
-			   }
-			   if ($page == "home") {
-				   include "home.php";
-			   }
-			   ?>
-    
 
-    </section>
+          <section class="content">
 
- 
-</div>
-      <!-- End of Main Content -->
-  
-   <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; 2019 . Sistem Informasi Inventaris Barang</span>
-          </div>
+
+            <?php
+            $page = $_GET['page'];
+            $aksi = $_GET['aksi'];
+
+
+            if ($page == "pengguna") {
+              if ($aksi == "") {
+                include "page/pengguna/pengguna2.php";
+              }
+              if ($aksi == "tambahpengguna2") {
+                include "page/pengguna/tambahpengguna2.php";
+              }
+            }
+
+
+            if ($page == "supplier") {
+              if ($aksi == "") {
+                include "page/supplier/supplier.php";
+              }
+              if ($aksi == "tambahsupplier") {
+                include "page//supplier/tambahsupplier.php";
+              }
+              if ($aksi == "ubahsupplier") {
+                include "page/supplier/ubahsupplier.php";
+              }
+
+              if ($aksi == "hapussupplier") {
+                include "page/supplier/hapussupplier.php";
+              }
+            }
+
+
+            if ($page == "jenisbarang") {
+              if ($aksi == "") {
+                include "page/jenisbarang/jenisbarang.php";
+              }
+              if ($aksi == "tambahjenis") {
+                include "page//jenisbarang/tambahjenis.php";
+              }
+              if ($aksi == "ubahsupplier") {
+                include "page/supplier/ubahsupplier.php";
+              }
+
+              if ($aksi == "hapussupplier") {
+                include "page/supplier/hapussupplier.php";
+              }
+            }
+
+            if ($page == "satuanbarang") {
+              if ($aksi == "") {
+                include "page/satuanbarang/satuan.php";
+              }
+              if ($aksi == "tambahsatuan") {
+                include "page//satuanbarang/tambahsatuan.php";
+              }
+              if ($aksi == "ubahsatuan") {
+                include "page/satuanbarang/ubahsatuan.php";
+              }
+
+              if ($aksi == "hapussatuan") {
+                include "page/satuanbarang/hapussatuan.php";
+              }
+            }
+
+
+
+
+            if ($page == "barangmasuk") {
+              if ($aksi == "") {
+                include "page/barangmasuk/barangmasuk.php";
+              }
+              if ($aksi == "tambahbarangmasuk") {
+                include "page/barangmasuk/tambahbarangmasuk.php";
+              }
+              if ($aksi == "ubahbarangmasuk") {
+                include "page/barangmasuk/ubahbarangmasuk.php";
+              }
+
+              if ($aksi == "hapusbarangmasuk") {
+                include "page/barangmasuk/hapusbarangmasuk.php";
+              }
+            }
+
+
+            if ($page == "gudang") {
+              if ($aksi == "") {
+                include "page/gudang/gudang.php";
+              }
+              if ($aksi == "tambahgudang") {
+                include "page/gudang/tambahgudang.php";
+              }
+              if ($aksi == "ubahgudang") {
+                include "page/gudang/ubahgudang.php";
+              }
+
+              if ($aksi == "hapusgudang") {
+                include "page/gudang/hapusgudang.php";
+              }
+            }
+
+
+            if ($page == "barangkeluar") {
+              if ($aksi == "") {
+                include "page/barangkeluar/barangkeluar.php";
+              }
+              if ($aksi == "tambahbarangkeluar") {
+                include "page/barangkeluar/tambahbarangkeluar.php";
+              }
+              if ($aksi == "ubahbarangkeluar") {
+                include "page/barangkeluar/ubahbarangkeluar.php";
+              }
+
+              if ($aksi == "hapusbarangkeluar") {
+                include "page/barangkeluar/hapusbarangkeluar.php";
+              }
+            }
+
+
+            if ($page == "laporan_supplier") {
+              if ($aksi == "") {
+                include "page/laporan/laporan_supplier.php";
+              }
+            }
+            if ($page == "laporan_barangmasuk") {
+              if ($aksi == "") {
+                include "page/laporan/laporan_barangmasuk.php";
+              }
+            }
+
+            if ($page == "laporan_gudang") {
+              if ($aksi == "") {
+                include "page/laporan/laporan_gudang.php";
+              }
+            }
+            if ($page == "laporan_barangkeluar") {
+              if ($aksi == "") {
+                include "page/laporan/laporan_barangkeluar.php";
+              }
+            }
+
+
+
+            if ($page == "") {
+              include "home.php";
+            }
+            if ($page == "home") {
+              include "home.php";
+            }
+            ?>
+
+
+          </section>
+
+
         </div>
-      </footer>
-      <!-- End of Footer -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; 2019 . Sistem Informasi Inventaris Barang</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+
+      </div>
+      <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
+    <!-- End of Page Wrapper -->
   </div>
 
   <!-- Scroll to Top Button-->
@@ -421,7 +406,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
   <!-- Logout Modal-->
 
- <!-- Bootstrap core JavaScript-->
+  <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -437,93 +422,145 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
-  
-    <!--script for this page-->
-<script>
-jQuery(document).ready(function($) {
-   $('#cmb_barang').change(function() { // Jika Select Box id provinsi dipilih
-     var tamp = $(this).val(); // Ciptakan variabel provinsi
-     $.ajax({
-            type: 'POST', // Metode pengiriman data menggunakan POST
-          url: 'page/barangmasuk/get_barang.php', // File yang akan memproses data
-         data: 'tamp=' + tamp, // Data yang akan dikirim ke file pemroses
-         success: function(data) { // Jika berhasil
-              $('.tampung').html(data); // Berikan hasil ke id kota
-            }
-           
-     
-    });
-});
-});
-</script>			
 
-<script>
-jQuery(document).ready(function($) {
-   $('#cmb_barang').change(function() { // Jika Select Box id provinsi dipilih
-     var tamp = $(this).val(); // Ciptakan variabel provinsi
-     $.ajax({
-            type: 'POST', // Metode pengiriman data menggunakan POST
-          url: 'page/barangmasuk/get_satuan.php', // File yang akan memproses data
-         data: 'tamp=' + tamp, // Data yang akan dikirim ke file pemroses
-         success: function(data) { // Jika berhasil
-              $('.tampung1').html(data); // Berikan hasil ke id kota
-            }
-           
-     
-    });
-});
-});
-</script> 
-
-<script type="text/javascript">
-    jQuery(document).ready(function($){
-        $(function(){
-    $('#Myform1').submit(function() {
+  <!--script for this page-->
+  <script>
+    jQuery(document).ready(function($) {
+      $('#cmb_barang').change(function() { // Jika Select Box id provinsi dipilih
+        var tamp = $(this).val(); // Ciptakan variabel provinsi
         $.ajax({
+          type: 'POST', // Metode pengiriman data menggunakan POST
+          url: 'page/barangmasuk/get_barang.php', // File yang akan memproses data
+          data: 'tamp=' + tamp, // Data yang akan dikirim ke file pemroses
+          success: function(data) { // Jika berhasil
+            $('.tampung').html(data); // Berikan hasil ke id kota
+          }
+
+
+        });
+      });
+    });
+  </script>
+
+  <script>
+    jQuery(document).ready(function($) {
+      $('#cmb_barang').change(function() { // Jika Select Box id provinsi dipilih
+        var tamp = $(this).val(); // Ciptakan variabel provinsi
+        $.ajax({
+          type: 'POST', // Metode pengiriman data menggunakan POST
+          url: 'page/barangmasuk/get_satuan.php', // File yang akan memproses data
+          data: 'tamp=' + tamp, // Data yang akan dikirim ke file pemroses
+          success: function(data) { // Jika berhasil
+            $('.tampung1').html(data); // Berikan hasil ke id kota
+          }
+
+
+        });
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+      $(function() {
+        $('#Myform1').submit(function() {
+          $.ajax({
             type: 'POST',
             url: 'page/laporan/export_laporan_barangmasuk_excel.php',
             data: $(this).serialize(),
             success: function(data) {
-             $(".tampung1").html(data);
-             $('.table').DataTable();
+              $(".tampung1").html(data);
+              $('.table').DataTable();
 
             }
-        });
+          });
 
-        return false;
-         e.preventDefault();
+          return false;
+          e.preventDefault();
         });
+      });
     });
-});
-</script>
+  </script>
 
 
- <script type="text/javascript">
-    jQuery(document).ready(function($){
-        $(function(){
-    $('#Myform2').submit(function() {
-        $.ajax({
+  <script type="text/javascript">
+    jQuery(document).ready(function($) {
+      $(function() {
+        $('#Myform2').submit(function() {
+          $.ajax({
             type: 'POST',
             url: 'page/laporan/export_laporan_barangkeluar_excel.php',
             data: $(this).serialize(),
             success: function(data) {
-             $(".tampung2").html(data);
-             $('.table').DataTable();
+              $(".tampung2").html(data);
+              $('.table').DataTable();
 
             }
-        });
+          });
 
-        return false;
-         e.preventDefault();
+          return false;
+          e.preventDefault();
         });
+      });
     });
-});
-</script>
+  </script>
 
-  
+  <script>
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      // tipe chart
+      type: 'bar',
+      data: {
+
+        //karena hanya menggunakan 2 batang
+        //maka buat dua lebel, yaitu lebel laki-laki dan perempuan
+        labels: ['Barang Masuk', 'Barang Keluar'],
+
+        //dataset adalah data yang akan ditampilkan
+        datasets: [{
+          label: 'Jumlah Barang',
+
+          //karena hanya menggunakan 2 batang/bar
+          //maka 2 sql yang dibutuhkan
+          //hitung jumlah mahasiswa laki-laki dan jumlah mahasiswa perempuan
+          data: [
+            <?php echo mysqli_num_rows($barang_masuk); ?>,
+            <?php echo mysqli_num_rows($barang_keluar); ?>,
+          ],
+
+          //atur background barchartnya
+          //karena cuma dua, maka 2 saja yang diatur
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+          ],
+
+          //atur border barchartnya
+          //karena cuma dua, maka 2 saja yang diatur
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  </script>
 
 
-  
+
+
+
 
 </body>
 

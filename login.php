@@ -21,7 +21,7 @@ $koneksi = new mysqli("localhost", "root", "", "inventori");
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
-			background: url(img/grey.jpg) no-repeat fixed;
+			background: url(img/abc.jpg) no-repeat fixed;
 			-webkit-background-size: 100% 100%;
 			-moz-background-size: 100% 100%;
 			-o-background-size: 100% 100%;
@@ -102,7 +102,7 @@ $login = $_POST['login'];
 $level = $_POST['level'];
 
 if ($login) {
-	$sql = $koneksi->query("select * from users where username='$username' and password='$password'");
+	$sql = $koneksi->query("select * from users where username='$username' and password='$password' and status='aktif' ");
 	$ketemu = $sql->num_rows;
 	$data = $sql->fetch_assoc();
 

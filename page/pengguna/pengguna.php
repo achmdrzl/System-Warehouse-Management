@@ -19,6 +19,7 @@
               <th>Username</th>
               <th>Level</th>
               <th>Foto</th>
+              <th>Status</th>
               <th>Aksi</th>
 
             </tr>
@@ -44,10 +45,28 @@
 
                 <td><?php echo $data['level'] ?></td>
                 <td><img src="img/<?php echo $data['foto'] ?>" width="50" height="50" alt=""> </td>
+                <td>
+                  <?php if ($data['status'] === 'aktif') { ?>
+                    <div class="badge badge-success">
+                      <?php echo $data['status'] ?>
+                    </div>
+                  <?php } else { ?>
+                    <div class="badge badge-danger">
+                      <?php echo $data['status'] ?>
+                    </div>
+                  <?php } ?>
+
+                </td>
+
 
                 <td>
                   <a href="?page=pengguna&aksi=ubahpengguna&id=<?php echo $data['id'] ?>" class="btn btn-success">Ubah</a>
-                  <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=pengguna&aksi=hapuspengguna&id=<?php echo $data['id'] ?>" class="btn btn-danger">Hapus</a>
+                  <?php if ($data['status'] === 'aktif') { ?>
+                    <a onclick="return confirm('Apakah anda yakin akan menonaktifkan akun ini?')" href="?page=pengguna&aksi=hapuspengguna&id=<?php echo $data['id'] ?>" class="btn btn-danger">Non-Aktifkan</a>
+                  <?php } else { ?>
+                    <a onclick="return confirm('Apakah anda yakin akan mengaktifkan akun ini?')" href="?page=pengguna&aksi=hapuspengguna&id=<?php echo $data['id'] ?>" class="btn btn-warning">Aktifkan</a>
+                  <?php } ?>
+
                 </td>
               </tr>
             <?php } ?>
