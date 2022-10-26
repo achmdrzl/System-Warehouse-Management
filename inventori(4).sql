@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Okt 2022 pada 03.11
+-- Waktu pembuatan: 17 Okt 2022 pada 04.50
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -44,7 +44,9 @@ CREATE TABLE `barang_keluar` (
 --
 
 INSERT INTO `barang_keluar` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `jumlah`, `total`, `tujuan`, `satuan`) VALUES
-(1, 'TRK-1022001', '2022-10-06', 'BAR-1022002', 'Chocogrande', '15', '10', 'Surabaya', 'PCS');
+(3, 'TRK-1022001', '2022-10-13', 'BAR-1022001', 'Nutrisari', '10', '5', 'Surabaya', 'PCS'),
+(4, 'TRK-1022002', '2022-10-13', 'BAR-1022002', 'Facial Wash', '2', '15', 'lamongan', 'Pack'),
+(5, 'TRK-1022003', '2022-10-16', 'BAR-1022001', 'Nutrisari', '2', '8', 'Probolinggo', 'PCS');
 
 --
 -- Trigger `barang_keluar`
@@ -71,16 +73,18 @@ CREATE TABLE `barang_masuk` (
   `nama_barang` varchar(100) NOT NULL,
   `pengirim` varchar(100) NOT NULL,
   `jumlah` varchar(100) NOT NULL,
-  `satuan` varchar(100) NOT NULL
+  `satuan` varchar(100) NOT NULL,
+  `tgl_exp` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `barang_masuk`
 --
 
-INSERT INTO `barang_masuk` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `pengirim`, `jumlah`, `satuan`) VALUES
-(1, 'TRM-0121001', '2021-01-19', 'BAR-0121001', 'Nutrisari', 'PT Sahabat Utama', '10', 'Pack'),
-(2, 'TRM-1022002', '2022-10-04', 'BAR-1022002', 'Chocogrande', 'PT Sahabat Utama', '25', 'PCS');
+INSERT INTO `barang_masuk` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `pengirim`, `jumlah`, `satuan`, `tgl_exp`) VALUES
+(7, 'TRM-1022001', '2022-10-13', 'BAR-1022001', 'Nutrisari', 'PT Sahabat Utama', '15', 'PCS', '2022-10-14'),
+(8, 'TRM-1022002', '2022-10-13', 'BAR-1022002', 'Facial Wash', 'PT Sahabat Utama', '2', 'Pack', '2022-10-15'),
+(9, 'TRM-1022003', '2022-10-13', 'BAR-1022001', 'Nutrisari', 'PT Sahabat Utama', '5', 'PCS', '2022-10-21');
 
 --
 -- Trigger `barang_masuk`
@@ -105,16 +109,18 @@ CREATE TABLE `gudang` (
   `nama_barang` varchar(100) NOT NULL,
   `jenis_barang` varchar(100) NOT NULL,
   `jumlah` varchar(250) NOT NULL,
-  `satuan` varchar(100) NOT NULL
+  `satuan` varchar(100) NOT NULL,
+  `status` varchar(191) NOT NULL DEFAULT 'aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `gudang`
 --
 
-INSERT INTO `gudang` (`id`, `kode_barang`, `nama_barang`, `jenis_barang`, `jumlah`, `satuan`) VALUES
-(1, 'BAR-0121001', 'Nutrisari', 'Minuman', '15', 'Pack'),
-(2, 'BAR-1022002', 'Chocogrande', 'Makanan', '10', 'PCS');
+INSERT INTO `gudang` (`id`, `kode_barang`, `nama_barang`, `jenis_barang`, `jumlah`, `satuan`, `status`) VALUES
+(3, 'BAR-1022001', 'Nutrisari', 'Minuman', '8', 'PCS', 'aktif'),
+(4, 'BAR-1022002', 'Facial Wash', 'Cosmetics', '15', 'Pack', 'aktif'),
+(5, 'BAR-1022003', 'T-Shirt', 'Pakaian', '0', 'PCS', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -135,7 +141,8 @@ INSERT INTO `jenis_barang` (`id`, `jenis_barang`) VALUES
 (5, 'Makanan'),
 (6, 'Minuman'),
 (7, 'Obat'),
-(8, 'Pakaian');
+(8, 'Pakaian'),
+(9, 'Cosmetic');
 
 -- --------------------------------------------------------
 
@@ -179,8 +186,7 @@ CREATE TABLE `tb_supplier` (
 --
 
 INSERT INTO `tb_supplier` (`id`, `kode_supplier`, `nama_supplier`, `alamat`, `telepon`) VALUES
-(10, 'SUP-1219001', 'PT Sahabat Utama', 'Jakarta Barat', '085546982020'),
-(11, 'SUP-1022002', 'PT. INDOMAS SURYA JAYA', 'Surabaya', '618278323333');
+(10, 'SUP-1219001', 'PT Sahabat Utama', 'Jakarta Barat', '085546982020');
 
 -- --------------------------------------------------------
 
@@ -197,18 +203,18 @@ CREATE TABLE `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `level` varchar(25) NOT NULL DEFAULT 'member',
-  `foto` varchar(25) NOT NULL
+  `foto` varchar(25) NOT NULL,
+  `status` varchar(25) NOT NULL DEFAULT 'aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `nik`, `nama`, `alamat`, `telepon`, `username`, `password`, `level`, `foto`) VALUES
-(27, '10001', 'admin', '', '0986660000', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '_CPC3217 copy.jpg'),
-(29, '123456789', 'Roys', '', '08123456899', 'roy', '5f4dcc3b5aa765d61d8327deb882cf99', 'superadmin', 'Circle-icons-profile.svg.'),
-(30, '12312123', 'tes', 'surabaya', '18239018923', 'test', 'password', 'superadmin', 'For_profile.jpg'),
-(31, '1234567890', 'superadmin', '', '1234567890', 'superadmin', 'cGFzc3dvcmQ=', 'superadmin', '123.jpg');
+INSERT INTO `users` (`id`, `nik`, `nama`, `alamat`, `telepon`, `username`, `password`, `level`, `foto`, `status`) VALUES
+(36, '', 'Mahmud', '', '', 'superadmin', 'password', 'superadmin', 'qrcode_localhost.png', 'aktif'),
+(37, '', 'Eko', '', '', 'admin', 'password', 'admin', 'qrcode_localhost.png', 'aktif'),
+(38, '', 'Cahyadi', '', '', 'petugas', 'password', 'petugas', 'qrcode_localhost.png', 'aktif');
 
 --
 -- Indexes for dumped tables
@@ -264,43 +270,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `gudang`
 --
 ALTER TABLE `gudang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis_barang`
 --
 ALTER TABLE `jenis_barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `satuan`
 --
 ALTER TABLE `satuan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_supplier`
 --
 ALTER TABLE `tb_supplier`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

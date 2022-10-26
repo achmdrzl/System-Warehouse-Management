@@ -5,9 +5,6 @@ $tampil = $sql2->fetch_assoc();
 
 $level = $tampil['level'];
 
-
-
-
 ?>
 
 <div class="container-fluid">
@@ -19,17 +16,12 @@ $level = $tampil['level'];
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
-
-
 				<div class="body">
-
 					<form method="POST" enctype="multipart/form-data">
-
 						<label for="">NIK</label>
 						<div class="form-group">
 							<div class="form-line">
 								<input type="number" name="nik" value="<?php echo $tampil['nik']; ?>" class="form-control" />
-
 							</div>
 						</div>
 
@@ -37,7 +29,6 @@ $level = $tampil['level'];
 						<div class="form-group">
 							<div class="form-line">
 								<input type="text" name="nama" value="<?php echo $tampil['nama']; ?>" class="form-control" />
-
 							</div>
 						</div>
 
@@ -45,7 +36,6 @@ $level = $tampil['level'];
 						<div class="form-group">
 							<div class="form-line">
 								<input type="number" name="telepon" value="<?php echo $tampil['telepon']; ?>" class="form-control" />
-
 							</div>
 						</div>
 
@@ -53,7 +43,6 @@ $level = $tampil['level'];
 						<div class="form-group">
 							<div class="form-line">
 								<input type="text" name="username" value="<?php echo $tampil['username']; ?>" class="form-control" />
-
 							</div>
 						</div>
 
@@ -61,7 +50,6 @@ $level = $tampil['level'];
 						<div class="form-group">
 							<div class="form-line">
 								<input type="text" name="password" value="<?php echo $tampil['password']; ?>" class="form-control" />
-
 							</div>
 						</div>
 
@@ -76,19 +64,19 @@ $level = $tampil['level'];
 											<option value="<?php echo $tampil['level'] ?>" selected><?php echo ucfirst($tampil['level']) ?></option>
 											<option value="admin">Admin</option>
 											<option value="petugas">Petugas</option>
-										<?php } elseif ($tampil['level'] == 'admin'){ ?>
+										<?php } elseif ($tampil['level'] == 'admin') { ?>
 											<option value="">-- Pilih Level --</option>
 											<option value="<?php echo $tampil['level'] ?>" selected><?php echo ucfirst($tampil['level']) ?></option>
 											<option value="admin">Super Admin</option>
 											<option value="petugas">Petugas</option>
-										<?php } elseif ($tampil['level'] == 'petugas'){ ?>
+										<?php } elseif ($tampil['level'] == 'petugas') { ?>
 											<option value="">-- Pilih Level --</option>
 											<option value="<?php echo $tampil['level'] ?>" selected><?php echo ucfirst($tampil['level']) ?></option>
 											<option value="admin">Super Admin</option>
 											<option value="petugas">Admin</option>
 										<?php } ?>
 
-									<?php }else { ?>
+									<?php } else { ?>
 										<option value="">-- Pilih Level --</option>
 										<option value="superadmin">Super Admin</option>
 										<option value="admin">Admin</option>
@@ -107,7 +95,6 @@ $level = $tampil['level'];
 							</div>
 						</div>
 
-
 						<label for="">Ganti Foto</label>
 						<div class="form-group">
 							<div class="form-line">
@@ -115,14 +102,9 @@ $level = $tampil['level'];
 
 							</div>
 						</div>
-
-
-
 						<input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
 
 					</form>
-
-
 
 					<?php
 

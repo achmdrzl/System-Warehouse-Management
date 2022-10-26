@@ -4,7 +4,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Informasi Stok Barang</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Stock Opname</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -16,9 +16,10 @@
                             <th>Nama Barang</th>
                             <th>Jenis Barang</th>
                             <th>Satuan</th>
-                            <th>Stok Barang</th>
-                            <th>Stok Barang di Gudang</th>
-                            <th>Detail</th>
+                            <th>Jumlah</th>
+                            <th>Jumlah di Gudang</th>
+                            <th>Pengaturan</th>
+
                         </tr>
                     </thead>
 
@@ -26,7 +27,7 @@
                         <?php
 
                         $no = 1;
-                        $sql = $koneksi->query("SELECT * FROM barang_masuk JOIN gudang WHERE barang_masuk.kode_barang = gudang.kode_barang AND gudang.status = 'aktif' group by barang_masuk.nama_barang order by barang_masuk.kode_barang ASC");
+                        $sql = $koneksi->query("select * from gudang");
                         while ($data = $sql->fetch_assoc()) {
 
                         ?>
@@ -39,8 +40,9 @@
                                 <td><?php echo $data['satuan'] ?></td>
                                 <td><?php echo $data['jumlah'] ?></td>
                                 <td><?php echo $data['on_gudang'] ?></td>
+
                                 <td>
-                                    <a href="?page=stock_brg&aksi=detail_brg&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-success">Detail Transaksi</a>
+                                    <a href="?page=sopname&aksi=editsopname&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-success">Ubah</a>
                                 </td>
                             </tr>
                         <?php } ?>

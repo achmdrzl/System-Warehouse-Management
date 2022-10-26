@@ -15,8 +15,8 @@
               <th>Kode Barang</th>
               <th>Nama Barang</th>
               <th>Jenis Barang</th>
-              <th>Jumlah Barang</th>
               <th>Satuan</th>
+              <th>Status</th>
               <th>Pengaturan</th>
 
             </tr>
@@ -36,14 +36,36 @@
                 <td><?php echo $data['kode_barang'] ?></td>
                 <td><?php echo $data['nama_barang'] ?></td>
                 <td><?php echo $data['jenis_barang'] ?></td>
-
-                <td><?php echo $data['jumlah'] ?></td>
                 <td><?php echo $data['satuan'] ?></td>
+                <td>
+                  <?php if ($data['status'] === 'aktif') { ?>
+                    <div class="badge badge-success">
+                      <?php echo $data['status'] ?>
+                    </div>
+                  <?php } else { ?>
+                    <div class="badge badge-danger">
+                      <?php echo $data['status'] ?>
+                    </div>
+                  <?php } ?>
 
+                </td>
 
                 <td>
                   <a href="?page=gudang&aksi=ubahgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-success">Ubah</a>
-                  <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=gudang&aksi=hapusgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-danger">Hapus</a>
+                  <?php if ($_SESSION['level'] == 'superadmin') {
+                  ?>
+
+                    <?php if ($data['status'] === 'aktif') { ?>
+                      <a onclick="return confirm('Apakah anda yakin akan menonaktifkan barang ini?')" href="?page=gudang&aksi=hapusgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-danger">Non-Aktifkan</a>
+                    <?php } else { ?>
+                      <a onclick="return confirm('Apakah anda yakin akan mengaktifkan barang ini?')" href="?page=gudang&aksi=hapusgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-warning">Aktifkan</a>
+                    <?php } ?>
+
+
+                  <?php
+                  }  ?>
+
+
                 </td>
               </tr>
             <?php } ?>

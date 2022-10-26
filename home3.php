@@ -13,13 +13,26 @@
   <!-- Content Row -->
   <div class="row">
 
-    <!-- Earnings (Monthly) Card Example -->
+    <!-- Content Row -->
     <div class="col-xl-12 col-md-12 mb-4">
       <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <canvas id="myChart" width="100" height="35"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="col-xl-12 col-md-12 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <canvas id="myChart2" width="100" height="35"></canvas>
             </div>
           </div>
         </div>

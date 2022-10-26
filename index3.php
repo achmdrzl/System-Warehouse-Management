@@ -14,7 +14,17 @@ if (empty($_SESSION['superadmin'])) {
 
 $barang_masuk = mysqli_query($koneksi, "SELECT * FROM barang_masuk");
 $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
+$labels = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
+for ($bulan = 1; $bulan < 13; $bulan++) {
+  $query = mysqli_query($koneksi, "SELECT SUM(jumlah) AS jumlah FROM barang_masuk WHERE MONTH(tanggal)='$bulan' ");
+  $row = $query->fetch_array();
+  $jumlah_produk_masuk[] = $row['jumlah'];
+
+  $query = mysqli_query($koneksi, "SELECT SUM(jumlah) AS jumlah FROM barang_keluar WHERE MONTH(tanggal)='$bulan' ");
+  $row = $query->fetch_array();
+  $jumlah_produk_keluar[] = $row['jumlah'];
+}
 
 ?>
 
@@ -122,7 +132,7 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
       <li class="nav-item active">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseData" aria-expanded="true" aria-controls="collapseData">
           <i class="fas fa-fw fa-folder"></i>
-          <span>Data Warehouse</span>
+          <span>Data Master</span>
         </a>
         <div id="collapseData" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
@@ -146,7 +156,7 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
             <h6 class="collapse-header">Menu:</h6>
             <a class="collapse-item" href="?page=barangmasuk">Barang Masuk</a>
             <a class="collapse-item" href="?page=barangkeluar">Barang Keluar</a>
-
+            <a class="collapse-item" href="?page=sopname">So Opaname Barang</a>
 
           </div>
         </div>
@@ -275,7 +285,7 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
                 include "page/supplier/supplier.php";
               }
               if ($aksi == "tambahsupplier") {
-                include "page//supplier/tambahsupplier.php";
+                include "page/supplier/tambahsupplier.php";
               }
               if ($aksi == "ubahsupplier") {
                 include "page/supplier/ubahsupplier.php";
@@ -292,14 +302,14 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
                 include "page/jenisbarang/jenisbarang.php";
               }
               if ($aksi == "tambahjenis") {
-                include "page//jenisbarang/tambahjenis.php";
+                include "page/jenisbarang/tambahjenis.php";
               }
-              if ($aksi == "ubahsupplier") {
-                include "page/supplier/ubahsupplier.php";
+              if ($aksi == "ubahjenis") {
+                include "page/jenisbarang/ubahjenis.php";
               }
 
-              if ($aksi == "hapussupplier") {
-                include "page/supplier/hapussupplier.php";
+              if ($aksi == "hapusjenis") {
+                include "page/jenisbarang/hapusjenis.php";
               }
             }
 
@@ -308,14 +318,14 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
                 include "page/satuanbarang/satuan.php";
               }
               if ($aksi == "tambahsatuan") {
-                include "page//satuanbarang/tambahsatuan.php";
+                include "page/satuanbarang/tambahsatuan.php";
               }
-              if ($aksi == "ubahsupplier") {
-                include "page/supplier/ubahsupplier.php";
+              if ($aksi == "ubahsatuan") {
+                include "page/satuanbarang/ubahsatuan.php";
               }
 
-              if ($aksi == "hapussupplier") {
-                include "page/supplier/hapussupplier.php";
+              if ($aksi == "hapussatuan") {
+                include "page/satuanbarang/hapussatuan.php";
               }
             }
 
@@ -332,6 +342,15 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
 
               if ($aksi == "hapusbarangmasuk") {
                 include "page/barangmasuk/hapusbarangmasuk.php";
+              }
+            }
+
+            if ($page == "sopname") {
+              if ($aksi == "") {
+                include "page/sopname/sopname.php";
+              }
+              if ($aksi == "editsopname") {
+                include "page/sopname/editsopname.php";
               }
             }
 
@@ -372,6 +391,9 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
             if ($page == "stock_brg") {
               if ($aksi == "") {
                 include "page/informasi/stock_brg.php";
+              }
+              if ($aksi == "detail_brg") {
+                include "page/informasi/detail_brg.php";
               }
             }
             if ($page == "brg_exp") {
@@ -421,7 +443,7 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; 2019 . Sistem Informasi Inventaris Barang</span>
+              <span>Copyright &copy; 2022 . Sistem Informasi Inventaris Barang</span>
             </div>
           </div>
         </footer>
@@ -549,33 +571,43 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
 
         //karena hanya menggunakan 2 batang
         //maka buat dua lebel, yaitu lebel laki-laki dan perempuan
-        labels: ['Barang Masuk', 'Barang Keluar'],
+        labels: <?php echo json_encode($labels); ?>,
 
         //dataset adalah data yang akan ditampilkan
         datasets: [{
-          label: 'Jumlah Barang',
+          label: 'Grafik Barang Masuk per Bulan',
 
           //karena hanya menggunakan 2 batang/bar
           //maka 2 sql yang dibutuhkan
           //hitung jumlah mahasiswa laki-laki dan jumlah mahasiswa perempuan
-          data: [
-            <?php echo mysqli_num_rows($barang_masuk); ?>,
-            <?php echo mysqli_num_rows($barang_keluar); ?>,
-          ],
-
-          //atur background barchartnya
-          //karena cuma dua, maka 2 saja yang diatur
+          data: <?php echo json_encode($jumlah_produk_masuk); ?>,
           backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)'
           ],
-
-          //atur border barchartnya
-          //karena cuma dua, maka 2 saja yang diatur
           borderColor: [
-            'rgba(255,99,132,1)',
+            'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)'
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
           ],
           borderWidth: 1
         }]
@@ -591,6 +623,69 @@ $barang_keluar = mysqli_query($koneksi, "SELECT * FROM barang_keluar");
       }
     });
   </script>
+
+  <script>
+    var ctx = document.getElementById("myChart2");
+    var myChart = new Chart(ctx, {
+      // tipe chart
+      type: 'bar',
+      data: {
+
+        //karena hanya menggunakan 2 batang
+        //maka buat dua lebel, yaitu lebel laki-laki dan perempuan
+        labels: <?php echo json_encode($labels); ?>,
+
+        //dataset adalah data yang akan ditampilkan
+        datasets: [{
+          label: 'Grafik Barang Keluar per Bulan',
+
+          //karena hanya menggunakan 2 batang/bar
+          //maka 2 sql yang dibutuhkan
+          //hitung jumlah mahasiswa laki-laki dan jumlah mahasiswa perempuan
+          data: <?php echo json_encode($jumlah_produk_keluar); ?>,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  </script>
+
 
 </body>
 

@@ -149,14 +149,7 @@
 
 							$satuan = $_POST['satuan'];
 
-
-
-
-
 							$sql = $koneksi->query("insert into barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah, satuan, pengirim, tgl_exp) values('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$satuan','$pengirim', '$tanggal_exp')");
-
-
-
 
 
 							if ($sql) {

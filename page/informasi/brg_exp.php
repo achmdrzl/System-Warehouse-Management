@@ -23,7 +23,7 @@
                         <?php
 
                         $no = 1;
-                        $sql = $koneksi->query("SELECT * FROM barang_masuk JOIN gudang WHERE barang_masuk.kode_barang = gudang.kode_barang");
+                        $sql = $koneksi->query("SELECT * FROM barang_masuk JOIN gudang WHERE barang_masuk.kode_barang = gudang.kode_barang AND gudang.status = 'aktif' group by barang_masuk.nama_barang order by barang_masuk.kode_barang ASC");
                         while ($data = $sql->fetch_assoc()) {
 
                         ?>

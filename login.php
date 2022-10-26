@@ -66,7 +66,7 @@ $koneksi = new mysqli("localhost", "root", "", "inventori");
 						<div class="form-group">
 							<input type="password" name="password" class="form-control" placeholder="Masukan Password" required autofocus />
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<select name="level" class="form-control" required>
 								<option value="">Pilih Level User</option>
 								<option value="superadmin">Super Admin</option>
@@ -74,7 +74,7 @@ $koneksi = new mysqli("localhost", "root", "", "inventori");
 								<option value="petugas">Petugas</option>
 
 							</select>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<input type="submit" name="login" class="btn btn-primary btn-block" value="Masuk" />
 
@@ -109,18 +109,21 @@ if ($login) {
 	if ($ketemu >= 1) {
 		session_start();
 
-		if ($data['level'] == 'superadmin' && $level == 'superadmin') {
+		if ($data['level'] == 'superadmin') {
 			$_SESSION['superadmin'] = $data['id'];
-
+			$_SESSION['level'] = $data['level'];
 			header("location:index3.php");
-		} else if ($data['level'] == 'admin' && $level == 'admin') {
+
+		} else if ($data['level'] == 'admin') {
 			$_SESSION['admin'] = $data['id'];
-
+			$_SESSION['level'] = $data['level'];
 			header("location:index.php");
-		} else if ($data['level'] == 'petugas' && $level == 'petugas') {
-			$_SESSION['petugas'] = $data['id'];
 
+		} else if ($data['level'] == 'petugas') {
+			$_SESSION['petugas'] = $data['id'];
+			$_SESSION['level'] = $data['level'];
 			header("location:index2.php");
+
 		}
 	} else {
 		echo '<center><div class="alert alert-danger">Upss...!!! Login gagal. Silakan Coba Kembali</div></center>';

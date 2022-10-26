@@ -1,3 +1,4 @@
+  
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -14,14 +15,12 @@
               <th>No</th>
               <th>NIK</th>
               <th>Nama</th>
-
               <th>Telepon</th>
               <th>Username</th>
               <th>Level</th>
               <th>Foto</th>
               <th>Status</th>
               <th>Aksi</th>
-
             </tr>
           </thead>
 

@@ -46,7 +46,9 @@
 								<td><?php echo $data['jumlah'] ?></td>
 								<td><?php echo $data['satuan'] ?></td>
 								<td>
+									<?php if ($_SESSION['level'] == 'superadmin') { ?>
 									<a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=barangmasuk&aksi=hapusbarangmasuk&id_transaksi=<?php echo $data['id_transaksi'] ?>" class="btn btn-danger">Hapus</a>
+								<?php }?>
 								</td>
 							</tr>
 						<?php } ?>
