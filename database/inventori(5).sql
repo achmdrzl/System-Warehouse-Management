@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Okt 2022 pada 04.50
+-- Waktu pembuatan: 27 Okt 2022 pada 00.48
 -- Versi server: 10.4.24-MariaDB
 -- Versi PHP: 8.1.6
 
@@ -44,9 +44,9 @@ CREATE TABLE `barang_keluar` (
 --
 
 INSERT INTO `barang_keluar` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `jumlah`, `total`, `tujuan`, `satuan`) VALUES
-(3, 'TRK-1022001', '2022-10-13', 'BAR-1022001', 'Nutrisari', '10', '5', 'Surabaya', 'PCS'),
+(3, 'TRK-1022001', '2022-02-13', 'BAR-1022001', 'Nutrisari', '10', '5', 'Surabaya', 'PCS'),
 (4, 'TRK-1022002', '2022-10-13', 'BAR-1022002', 'Facial Wash', '2', '15', 'lamongan', 'Pack'),
-(5, 'TRK-1022003', '2022-10-16', 'BAR-1022001', 'Nutrisari', '2', '8', 'Probolinggo', 'PCS');
+(5, 'TRK-1022003', '2022-11-16', 'BAR-1022001', 'Nutrisari', '2', '8', 'Probolinggo', 'PCS');
 
 --
 -- Trigger `barang_keluar`
@@ -84,7 +84,8 @@ CREATE TABLE `barang_masuk` (
 INSERT INTO `barang_masuk` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `pengirim`, `jumlah`, `satuan`, `tgl_exp`) VALUES
 (7, 'TRM-1022001', '2022-10-13', 'BAR-1022001', 'Nutrisari', 'PT Sahabat Utama', '15', 'PCS', '2022-10-14'),
 (8, 'TRM-1022002', '2022-10-13', 'BAR-1022002', 'Facial Wash', 'PT Sahabat Utama', '2', 'Pack', '2022-10-15'),
-(9, 'TRM-1022003', '2022-10-13', 'BAR-1022001', 'Nutrisari', 'PT Sahabat Utama', '5', 'PCS', '2022-10-21');
+(9, 'TRM-1022003', '2022-11-13', 'BAR-1022001', 'Nutrisari', 'PT Sahabat Utama', '5', 'PCS', '2022-10-21'),
+(10, 'TRM-1022004', '2022-02-27', 'BAR-1022003', 'T-Shirt', 'PT Sahabat Utama', '12', 'PCS', '2022-10-31');
 
 --
 -- Trigger `barang_masuk`
@@ -109,6 +110,7 @@ CREATE TABLE `gudang` (
   `nama_barang` varchar(100) NOT NULL,
   `jenis_barang` varchar(100) NOT NULL,
   `jumlah` varchar(250) NOT NULL,
+  `on_gudang` int(11) NOT NULL,
   `satuan` varchar(100) NOT NULL,
   `status` varchar(191) NOT NULL DEFAULT 'aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -117,10 +119,10 @@ CREATE TABLE `gudang` (
 -- Dumping data untuk tabel `gudang`
 --
 
-INSERT INTO `gudang` (`id`, `kode_barang`, `nama_barang`, `jenis_barang`, `jumlah`, `satuan`, `status`) VALUES
-(3, 'BAR-1022001', 'Nutrisari', 'Minuman', '8', 'PCS', 'aktif'),
-(4, 'BAR-1022002', 'Facial Wash', 'Cosmetics', '15', 'Pack', 'aktif'),
-(5, 'BAR-1022003', 'T-Shirt', 'Pakaian', '0', 'PCS', 'aktif');
+INSERT INTO `gudang` (`id`, `kode_barang`, `nama_barang`, `jenis_barang`, `jumlah`, `on_gudang`, `satuan`, `status`) VALUES
+(3, 'BAR-1022001', 'Nutrisari', 'Minuman', '8', 3, 'PCS', 'aktif'),
+(4, 'BAR-1022002', 'Facial Wash', 'Cosmetics', '15', 0, 'Pack', 'aktif'),
+(5, 'BAR-1022003', 'T-Shirt', 'Pakaian', '12', 0, 'PCS', 'aktif');
 
 -- --------------------------------------------------------
 
@@ -213,8 +215,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `nik`, `nama`, `alamat`, `telepon`, `username`, `password`, `level`, `foto`, `status`) VALUES
 (36, '', 'Mahmud', '', '', 'superadmin', 'password', 'superadmin', 'qrcode_localhost.png', 'aktif'),
-(37, '', 'Eko', '', '', 'admin', 'password', 'admin', 'qrcode_localhost.png', 'aktif'),
-(38, '', 'Cahyadi', '', '', 'petugas', 'password', 'petugas', 'qrcode_localhost.png', 'aktif');
+(37, '', 'Eko', '', '', 'admin', 'password', 'admin', 'qrcode_localhost.png', 'aktif');
 
 --
 -- Indexes for dumped tables
@@ -276,7 +277,7 @@ ALTER TABLE `barang_keluar`
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `gudang`
